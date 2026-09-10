@@ -1,0 +1,30 @@
+# systemd user-юнит для DeepSeek Harness web (вариант B автозапуска).
+#
+# Установка:
+#   mkdir -p ~/.config/systemd/user
+#   cp dsh-web.service ~/.config/systemd/user/
+#   cp dsh-web-start.sh ~/.dsh/bin/ && chmod +x ~/.dsh/bin/dsh-web-start.sh
+#   loginctl enable-linger $USER
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now dsh-web.service
+#
+# Проверка:
+#   systemctl --user status dsh-web.service
+#   journalctl --user -u dsh-web.service -n 50
+
+[Unit]
+Description=DeepSeek Harness web profile (dsh web)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=%h/.dsh/bin/dsh-web-start.sh --foreground
+Restart=on-failure
+RestartSec=5
+# Дам демону чистое окружение; DSH_BIN задаётся здесь явно, если dsh
+# нет в системном PATH. Раскомментируйте и подставьте свой путь:
+# Environment=DSH_BIN=/home/sa/.npm/_npx/1e7f6d9597241db0/node_modules/.bin/dsh
+
+[Install]
+WantedBy=default.target

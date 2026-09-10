@@ -1,0 +1,20 @@
+# ============================================================================
+# Пример /etc/wsl.conf для автозапуска dsh web (вариант A).
+# СЛИТЕ с существующим /etc/wsl.conf (не перетирайте!): у вас уже есть
+# [boot] systemd=true и [user] default=sa — их нужно сохранить.
+#
+#   sudo cp /home/sa/work/dsh-autostart/wsl.conf.example /etc/wsl.conf.new
+#   sudo cp /etc/wsl.conf /etc/wsl.conf.bak
+#   # ... вписать строку command= в секцию [boot] ...
+#   wsl --shutdown   # и запустить WSL заново (или перезагрузить ПК)
+# ============================================================================
+
+[boot]
+systemd=true
+# Запускается при старте WSL-VM как shell-команда. Поднимает идемпотентно
+# оба сервиса: LightRAG (9621) и dsh web (3080). Если уже запущены —
+# сразу выходит с кодом 0.
+command=/home/sa/.dsh/bin/start-services.sh
+
+[user]
+default=sa

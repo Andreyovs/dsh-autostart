@@ -1,0 +1,27 @@
+# systemd user-юнит для локального LightRAG-сервера (вариант B автозапуска).
+#
+# Установка:
+#   cp lightrag.service ~/.config/systemd/user/
+#   loginctl enable-linger $USER
+#   systemctl --user daemon-reload
+#   systemctl --user enable --now lightrag.service
+#   systemctl --user status lightrag.service
+#
+# Проверка:
+#   curl -s http://127.0.0.1:9621/health
+#   journalctl --user -u lightrag -n 50
+
+[Unit]
+Description=LightRAG knowledge base server (local)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/work/lightrag
+ExecStart=%h/work/lightrag/.venv/bin/lightrag-server
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target
