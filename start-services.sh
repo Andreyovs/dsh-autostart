@@ -27,8 +27,15 @@ if [[ "$(id -u)" == "0" ]]; then
   fi
 fi
 
-# Диагностика: фиксируем факт запуска boot-command и окружение
-echo "$(date -Is) boot-command запущен (HOME=${HOME:-<unset>}, user=$(id -un), PATH=$PATH)" >> /home/sa/.dsh/logs/boot.log 2>/dev/null || true
+# Диагностика: фиксация факта запуска boot-command и окружения.
+# Отдельный файл на каждый запуск — чтобы разные идентичности
+# (root/nobody/sa) не конфликтовали правами записи в общем файле.
+bootdiag="/home/sa/.dsh/logs/boot-$(date +%Y%m%d-%H%M%S)-$(id -un).log"
+{
+  echo "$(date -Is) start-services invoked: $0"
+  echo "  uid=$(id -u) user=$(id -un) HOME=${HOME:-<unset>}"
+  echo "  PATH=$PATH"
+} >> "$bootdiag" 2>/dev/null || true
 
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
