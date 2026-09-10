@@ -10,6 +10,12 @@
 #   LIGHTRAG_PORT — порт (по умолчанию 9621)
 # =============================================================================
 set -u
+# [boot] command WSL запускает без пользовательского окружения: HOME не задан —
+# восстанавливаем из passwd (без него все пути $HOME/... ломаются).
+if [[ -z "${HOME:-}" ]]; then
+  export HOME="$(getent passwd "$(id -un)" | cut -d: -f6)" 2>/dev/null || export HOME=/home/sa
+fi
+
 
 HOST=127.0.0.1
 PORT="${LIGHTRAG_PORT:-9621}"

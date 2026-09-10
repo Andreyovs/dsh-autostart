@@ -10,6 +10,12 @@
 #   2. dsh web (GUI DeepSeek Harness, http://127.0.0.1:3080)
 # =============================================================================
 set -u
+# [boot] command WSL запускает без пользовательского окружения: HOME не задан —
+# восстанавливаем из passwd (без него все пути $HOME/... ломаются).
+if [[ -z "${HOME:-}" ]]; then
+  export HOME="$(getent passwd "$(id -un)" | cut -d: -f6)" 2>/dev/null || export HOME=/home/sa
+fi
+
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
