@@ -16,6 +16,17 @@ if [[ -z "${HOME:-}" ]]; then
   export HOME="$(getent passwd "$(id -un)" | cut -d: -f6)" 2>/dev/null || export HOME=/home/sa
 fi
 
+# [boot] command может запускаться от root (Docker Desktop первым поднимает
+# дистрибутив с -u root). Сервисы должны работать от пользователя по умолчанию.
+if [[ "$(id -u)" == "0" ]]; then
+  default_user="$(awk -F= '/^\[user\]/{u=1;next} u&&/^default=/{print $2; exit}' /etc/wsl.conf 2>/dev/null | tr -d '[:space:]')"
+  default_user="${default_user:-sa}"
+  if id "$default_user" >/dev/null 2>&1; then
+    echo "root: перезапуск от пользователя $default_user" >&2
+    exec runuser -u "$default_user" -- "$0" "$@"
+  fi
+fi
+
 # Диагностика: фиксируем факт запуска boot-command и окружение
 echo "$(date -Is) boot-command запущен (HOME=${HOME:-<unset>}, user=$(id -un), PATH=$PATH)" >> /home/sa/.dsh/logs/boot.log 2>/dev/null || true
 
