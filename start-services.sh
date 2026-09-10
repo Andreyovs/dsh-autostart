@@ -16,6 +16,9 @@ if [[ -z "${HOME:-}" ]]; then
   export HOME="$(getent passwd "$(id -un)" | cut -d: -f6)" 2>/dev/null || export HOME=/home/sa
 fi
 
+# Диагностика: фиксируем факт запуска boot-command и окружение
+echo "$(date -Is) boot-command запущен (HOME=${HOME:-<unset>}, user=$(id -un), PATH=$PATH)" >> /home/sa/.dsh/logs/boot.log 2>/dev/null || true
+
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
