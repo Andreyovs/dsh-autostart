@@ -32,7 +32,7 @@
 
 ```bash
 mkdir -p ~/.dsh/bin ~/.dsh/logs
-cp /home/sa/work/dsh-autostart/dsh-web-start.sh ~/.dsh/bin/
+cp /home/sa/automation/dsh-autostart/dsh-web-start.sh ~/.dsh/bin/
 chmod +x ~/.dsh/bin/dsh-web-start.sh
 
 # Проверка (сейчас сервис уже работает — должно напечатать "уже работает"):
@@ -51,9 +51,9 @@ chmod +x ~/.dsh/bin/dsh-web-start.sh
 
 ```bash
 mkdir -p ~/.dsh/bin
-cp /home/sa/work/dsh-autostart/start-services.sh \
-   /home/sa/work/dsh-autostart/lightrag-start.sh \
-   /home/sa/work/dsh-autostart/dsh-web-start.sh ~/.dsh/bin/
+cp /home/sa/automation/dsh-autostart/start-services.sh \
+   /home/sa/automation/dsh-autostart/lightrag-start.sh \
+   /home/sa/automation/dsh-autostart/dsh-web-start.sh ~/.dsh/bin/
 chmod +x ~/.dsh/bin/*.sh
 
 sudo cp /etc/wsl.conf /etc/wsl.conf.bak
@@ -65,8 +65,8 @@ cat /etc/wsl.conf   # убедиться, что строка в секции [b
 
 ```bash
 mkdir -p ~/.config/systemd/user
-cp /home/sa/work/dsh-autostart/dsh-web.service \
-   /home/sa/work/dsh-autostart/lightrag.service ~/.config/systemd/user/
+cp /home/sa/automation/dsh-autostart/dsh-web.service \
+   /home/sa/automation/dsh-autostart/lightrag.service ~/.config/systemd/user/
 loginctl enable-linger "$USER"          # user-сессия живёт без открытого терминала
 systemctl --user daemon-reload
 systemctl --user enable --now lightrag.service dsh-web.service
