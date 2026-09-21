@@ -2,8 +2,8 @@
 # =============================================================================
 # lightrag-start.sh — идемпотентный запуск локального сервера LightRAG в WSL.
 #
-# Сервер: /home/sa/work/lightrag (venv из GitHub: HKUDS/LightRAG, [api]).
-# LLM/эмбеддинги: gpustack (настроено в /home/sa/work/lightrag/.env).
+# Сервер: /home/sa/automation/lightrag (venv из GitHub: HKUDS/LightRAG, [api]).
+# LLM/эмбеддинги: gpustack (настроено в /home/sa/automation/lightrag/.env).
 #
 # Идемпотентен: если /health уже отвечает — ничего не запускает.
 # Переменные окружения (необязательные):
@@ -19,7 +19,7 @@ fi
 
 HOST=127.0.0.1
 PORT="${LIGHTRAG_PORT:-9621}"
-ROOT="${LIGHTRAG_ROOT:-$HOME/work/lightrag}"
+ROOT="${LIGHTRAG_ROOT:-$HOME/automation/lightrag}"
 LOG_DIR="$ROOT/logs"
 LOG_FILE="$LOG_DIR/lightrag-server.log"
 WAIT_SECONDS=90

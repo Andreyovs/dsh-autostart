@@ -18,8 +18,8 @@ Wants=network-online.target
 
 [Service]
 Type=simple
-WorkingDirectory=%h/work/lightrag
-ExecStart=%h/work/lightrag/.venv/bin/lightrag-server
+WorkingDirectory=%h/automation/lightrag
+ExecStart=%h/automation/lightrag/.venv/bin/lightrag-server
 Restart=on-failure
 RestartSec=5
 

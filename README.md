@@ -105,8 +105,8 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:3080/   # 401 = раб
 ## Лог и отладка
 
 - Лог dsh web: `~/.dsh/logs/dsh-web.log`
-- Лог LightRAG: `/home/sa/work/lightrag/logs/lightrag-server.log`
-  (и собственный `/home/sa/work/lightrag/lightrag.log`)
+- Лог LightRAG: `/home/sa/automation/lightrag/logs/lightrag-server.log`
+  (и собственный `/home/sa/automation/lightrag/lightrag.log`)
 - Лог systemd-юнита: `journalctl --user -u dsh-web -n 50`
   / `journalctl --user -u lightrag -n 50`
 - VM не стартует? из Windows: `wsl -l -v` (Working = запущена),
@@ -122,8 +122,8 @@ curl -s -o /dev/null -w '%{http_code}\n' http://127.0.0.1:3080/   # 401 = раб
 2. WSL: при старте VM выполняется `command=` из `/etc/wsl.conf`
    (или стартуют user-юниты):
    - `lightrag-start.sh` — если порт 9621 не отвечает, поднимает
-     `lightrag-server` (venv `/home/sa/work/lightrag/.venv`, конфиг `.env`,
-     LLM/эмбеддинги — gpustack), лог `/home/sa/work/lightrag/logs/`;
+     `lightrag-server` (venv `/home/sa/automation/lightrag/.venv`, конфиг `.env`,
+     LLM/эмбеддинги — gpustack), лог `/home/sa/automation/lightrag/logs/`;
    - `dsh-web-start.sh` — если порт 3080 не отвечает, поднимает
      `dsh web` (nohup/setsid, лог `~/.dsh/logs/`).
 3. Браузер Windows: `127.0.0.1:3080` автоматически форвардится WSL2
