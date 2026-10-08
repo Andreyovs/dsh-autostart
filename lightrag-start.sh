@@ -33,6 +33,21 @@ health_up() {
   fi
 }
 
+# [boot] command запускается сразу после старта VM: DNS/сеть ещё не подняты —
+# lightrag-server тогда падает на загрузке tiktoken (NameResolutionError).
+# Ждём, пока резолвится внешний хост (до 60 c); иначе стартуем и предупреждаем.
+wait_for_network() {
+  local i
+  for ((i = 0; i < 60; i++)); do
+    if getent hosts openaipublic.blob.core.windows.net >/dev/null 2>&1; then
+      return 0
+    fi
+    sleep 1
+  done
+  echo "ПРЕДУПРЕЖДЕНИЕ: DNS не поднялся за 60 c — стартую lightrag-server как есть." >&2
+  return 0
+}
+
 main() {
   if health_up; then
     echo "LightRAG уже запущен: http://$HOST:$PORT/health — ничего не запускаю."
@@ -43,6 +58,8 @@ main() {
     echo "ОШИБКА: $ROOT/.venv/bin/lightrag-server не найден (venv не установлен?)." >&2
     return 1
   fi
+
+  wait_for_network
 
   mkdir -p "$LOG_DIR" "$ROOT/inputs" "$ROOT/rag_storage"
   echo "$(date -Is) starting lightrag-server (log: $LOG_FILE)" >> "$LOG_FILE"
